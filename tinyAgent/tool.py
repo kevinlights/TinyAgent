@@ -66,6 +66,12 @@ class Tools:
 
         try:
             body = get_page_content(pages[page_index]["link"], max_chars=max_chars)
+            print(f'got content for link: {pages[page_index]["link"]}')
+            print(f"body: {body}")
+            if len(body) < 500:
+                page_index += 1
+                if page_index < len(pages):
+                    return self._get_page_content(pages, page_index)
             return body
         except:
             page_index += 1

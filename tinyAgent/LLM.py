@@ -21,12 +21,13 @@ class OllamaModel(BaseModel):
         self.model = model
 
     def chat(self, prompt: str, history: List[dict], meta_instruction: str = ""):
+        msgs = [{"role": "system", "content": meta_instruction}]
+        for item in history:
+            msgs.append({"role": "user", "content": item})
+        msgs.append({"role": "user", "content": prompt})
         response = ollama.chat(
             model=self.model,
-            messages=[
-                {"role": "system", "content": meta_instruction},
-                {"role": "user", "content": prompt},
-            ],
+            messages=msgs,
         )
         return response.message.content, history
 
